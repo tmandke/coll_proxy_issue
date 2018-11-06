@@ -5,7 +5,7 @@ If the following command is the first command after a load/reload in a developme
 web server, it returns `nil` instead of `true`.
   ```ruby
     # This command is a simplification of what we use. 
-    # We do not use `Person.all` nor do we return a `CollectionProxy`
+    # We do not use `Person.all` nor do we return a `CollectionProxy` in an `any?` block.
     Person.all.any? { |r| Person.first.accounts }
   ```
 In my testing I have found that this is only a problem if the first execution 
