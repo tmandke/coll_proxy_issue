@@ -1,24 +1,44 @@
-# README
+# Coll Proxy Issue
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+There is a issue with `CollectionProxy#any?` or `Relation`, I have not been able to figure it out.
+If the following command is the first command after a load/reload in a development console or 
+web server, it returns `nil` instead of `true`.
+  ```ruby
+    Person.all.any? { |r| Person.first.accounts }
+  ```
+I have tested the on Rails 5.2.3 and Rails edge, the problem exists on both.
 
-Things you may want to cover:
+Here are the steps to reproduce the problem:
+* Clone this repository
+* Run the following in the cloned repository
+  ```bash
+  bundle install
+  rails db:setup
+  rails c
+  ```
+* Call the command `Person.all.any? { |r| Person.first.accounts }`
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Here is a sample output:
+```
+Loading development environment (Rails 5.2.1)
+irb(main):001:0> Person.all.any? { |r| Person.first.accounts }
+  Person Load (1.2ms)  SELECT "people".* FROM "people"
+  Person Load (0.3ms)  SELECT  "people".* FROM "people" ORDER BY "people"."id" ASC LIMIT ?  [["LIMIT", 1]]
+=> nil
+irb(main):002:0> Person.all.any? { |r| Person.first.accounts }
+  Person Load (0.2ms)  SELECT "people".* FROM "people"
+  Person Load (0.1ms)  SELECT  "people".* FROM "people" ORDER BY "people"."id" ASC LIMIT ?  [["LIMIT", 1]]
+=> true
+irb(main):003:0> reload!
+Reloading...
+=> true
+irb(main):004:0> Person.all.any? { |r| Person.first.accounts }
+  Person Load (0.1ms)  SELECT "people".* FROM "people"
+  Person Load (0.1ms)  SELECT  "people".* FROM "people" ORDER BY "people"."id" ASC LIMIT ?  [["LIMIT", 1]]
+=> nil
+irb(main):005:0> Person.all.any? { |r| Person.first.accounts }
+  Person Load (0.1ms)  SELECT "people".* FROM "people"
+  Person Load (0.1ms)  SELECT  "people".* FROM "people" ORDER BY "people"."id" ASC LIMIT ?  [["LIMIT", 1]]
+=> true
+```
+  
