@@ -19,7 +19,7 @@ The following commands also show the same behaviour:
 I have tested the on Rails 5.2.3 and Rails edge, the problem exists on both.
 
 
-Here are the steps to reproduce the problem:
+### Here are the steps to reproduce the problem:
 * Clone this repository
 * Run the following in the cloned repository
   ```bash
