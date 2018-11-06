@@ -1,12 +1,17 @@
 # Coll Proxy Issue
 
-There is a issue with `CollectionProxy#any?` or `Relation`, I have not been able to figure it out.
+There is a issue with `CollectionProxy#any?`, I have not been able to figure it out.
 If the following command is the first command after a load/reload in a development console or 
 web server, it returns `nil` instead of `true`.
   ```ruby
+    # This command is a simplification of what we use. 
+    # We do not use `Person.all` nor do we return a `CollectionProxy`
     Person.all.any? { |r| Person.first.accounts }
   ```
-I have tested the on Rails 5.2.3 and Rails edge, the problem exists on both.
+In my testing I have found that this is only a problem if the first execution 
+of the block must return truthy and involve a `CollectionProxy`. I have tested 
+the on Rails 5.2.3 and Rails edge, the problem exists on both.
+
 
 Here are the steps to reproduce the problem:
 * Clone this repository
