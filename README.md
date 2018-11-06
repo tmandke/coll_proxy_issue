@@ -9,8 +9,14 @@ web server, it returns `nil` instead of `true`.
     Person.all.any? { |r| Person.first.accounts }
   ```
 In my testing I have found that this is only a problem if the first execution 
-of the block must return truthy and involve a `CollectionProxy`. I have tested 
-the on Rails 5.2.3 and Rails edge, the problem exists on both.
+of the block must return truthy and involve a `CollectionProxy`. 
+The following commands also show the same behaviour:
+  ```ruby
+    Person.all.any? { |r| Person.first.accounts.include?(1) || true }
+    Person.all.any? { |r| Person.first.accounts.include?(Account.find_by(person: Person.first)) }
+  ```
+ 
+I have tested the on Rails 5.2.3 and Rails edge, the problem exists on both.
 
 
 Here are the steps to reproduce the problem:
