@@ -16,7 +16,7 @@ The following commands also show the same behaviour:
     Person.all.any? { |r| Person.first.accounts.include?(Account.find_by(person: Person.first)) }
   ```
  
-I have tested the on Rails 5.2.3 and Rails edge, the problem exists on both.
+I have tested the on Rails 5.2.1 and Rails edge, the problem exists on both.
 
 
 ### Here are the steps to reproduce the problem:
