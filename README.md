@@ -29,7 +29,7 @@ I have tested the on Rails 5.2.3 and Rails edge, the problem exists on both.
   ```
 * Call the command `Person.all.any? { |r| Person.first.accounts }`
 
-Here is a sample output:
+### Here is a sample output:
 ```
 Loading development environment (Rails 5.2.1)
 irb(main):001:0> Person.all.any? { |r| Person.first.accounts }
